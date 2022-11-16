@@ -160,8 +160,8 @@ const createEditModal = (userId, currentName) => {
         </div>
     `)
 
-    var modal = document.getElementById("editModal");
-    var span = document.getElementsByClassName("close")[0];
+    let modal = document.getElementById("editModal");
+    let span = document.getElementsByClassName("close")[0];
     span.onclick = () => modal.remove();
     window.onclick = (event) => {
         if (event.target == modal) {
