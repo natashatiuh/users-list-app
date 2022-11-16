@@ -10,3 +10,8 @@ npm install
 ```
 npm start
 ```
+
+## UI is hosted on:
+```
+http://localhost:3000/client
+```
