@@ -42,6 +42,51 @@ const deleteUser = async (userId) => {
     initUsers()
 }
 
+const createReorderModal = (userId) => {
+    const options = users
+        .filter(user => user.userId != userId)
+        .map(user => `<option value="${user.userId}">${user.userName}</option>`)
+
+    document.body.insertAdjacentHTML('beforeend', `
+        <div id="reorderModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h1>Move user to be after:</h1>
+                <select id="users-select" class="text-field">
+                    ${options.join('\n')}
+                </select>
+                <button onclick="reorderUser('${userId}')" id="save-button" class="save-btn">Save</button>
+            </div>
+        </div>
+    `)
+
+    var modal = document.getElementById("reorderModal");
+    var span = document.getElementsByClassName("close")[0];
+    span.onclick = () => modal.remove();
+    window.onclick = (event) => {
+        if (event.target == modal) {
+            modal.remove()
+        }
+    }
+}
+
+const reorderUser = async (userIdToMove) => {
+    const afterUserId = document.getElementById('users-select').value
+    const url = `http://localhost:3000/users/reorder`
+    await fetch(url, { 
+        method: "PATCH", 
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ afterUserId, userIdToMove }) 
+    })
+
+    const modal = document.getElementById("reorderModal");
+    modal.remove()
+
+    initUsers()
+}
+
 const editUser = async (userId) => {
     const input = document.getElementById('edit-name')
     const newName = input.value
@@ -78,52 +123,6 @@ const addUser = async () => {
     modal.remove()
 
     initUsers()
-}
-
-const reorderUser = async (userIdToMove) => {
-    const afterUserId = document.getElementById('users-select').value
-    const url = `http://localhost:3000/users/reorder`
-    await fetch(url, { 
-        method: "PATCH", 
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ afterUserId, userIdToMove }) 
-    })
-
-    const modal = document.getElementById("reorderModal");
-    modal.remove()
-
-    initUsers()
-}
-
-
-const createReorderModal = (userId) => {
-    const options = users
-        .filter(user => user.userId != userId)
-        .map(user => `<option value="${user.userId}">${user.userName}</option>`)
-
-    document.body.insertAdjacentHTML('beforeend', `
-        <div id="reorderModal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h1>Move user to be after:</h1>
-                <select id="users-select" class="text-field">
-                    ${options.join('\n')}
-                </select>
-                <button onclick="reorderUser('${userId}')" id="save-button" class="save-btn">Save</button>
-            </div>
-        </div>
-    `)
-
-    var modal = document.getElementById("reorderModal");
-    var span = document.getElementsByClassName("close")[0];
-    span.onclick = () => modal.remove();
-    window.onclick = (event) => {
-        if (event.target == modal) {
-            modal.remove()
-        }
-    }
 }
 
 const createAddModal = () => {
