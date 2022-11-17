@@ -2,8 +2,10 @@ let photos = {}
 
 let users = []
 
+const domain = 'https://my-users-list-app.herokuapp.com'
+
 const initUsers = async () => {
-    const url = 'http://localhost:3000/users/'
+    const url = `${domain}/users/`
     const response = await fetch(url, { method: "GET" })
     users = await response.json()
 
@@ -30,7 +32,7 @@ const initUsers = async () => {
 }
 
 const deleteUser = async (userId) => {
-    const url = `http://localhost:3000/users`
+    const url = `${domain}/users`
     await fetch(url, { 
         method: "DELETE", 
         headers: {
@@ -72,7 +74,7 @@ const createReorderModal = (userId) => {
 
 const reorderUser = async (userIdToMove) => {
     const afterUserId = document.getElementById('users-select').value
-    const url = `http://localhost:3000/users/reorder`
+    const url = `${domain}/users/reorder`
     await fetch(url, { 
         method: "PATCH", 
         headers: {
@@ -91,7 +93,7 @@ const editUser = async (userId) => {
     const input = document.getElementById('edit-name')
     const newName = input.value
 
-    const url = `http://localhost:3000/users`
+    const url = `${domain}/users`
     await fetch(url, { 
         method: "PATCH",
         headers: {
@@ -110,7 +112,7 @@ const addUser = async () => {
     const input = document.getElementById('add-name')
     const newName = input.value
 
-    const url = `http://localhost:3000/users`
+    const url = `${domain}/users`
     await fetch(url, { 
         method: "POST", 
         headers: {
